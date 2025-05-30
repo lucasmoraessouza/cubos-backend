@@ -33,7 +33,6 @@ export class StorageService implements OnModuleInit {
   async uploadImage(file: Express.Multer.File): Promise<string> {
     try {
       const key = `movies/${Date.now()}-${file.originalname}`;
-
       const command = new PutObjectCommand({
         Bucket: this.bucket,
         Key: key,
@@ -43,15 +42,8 @@ export class StorageService implements OnModuleInit {
       await this.s3Client.send(command);
 
       const imageUrl = `https://${this.bucket}.s3.amazonaws.com/${key}`;
-      console.log('Upload successful:', imageUrl);
       return imageUrl;
     } catch (error) {
-      console.error('Erro no upload:', {
-        message: error.message,
-        code: error.code,
-        bucket: this.bucket,
-        region: process.env.AWS_REGION,
-      });
       throw new Error(`Erro no upload: ${error.message}`);
     }
   }

@@ -44,6 +44,7 @@ export class MoviesService {
         await this.mailService.sendMovieReleaseNotification(
           movie.user.email,
           movie.originalTitle,
+          movie.imageUrl || '',
         );
       }, delay);
     }

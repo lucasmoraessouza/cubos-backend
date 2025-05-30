@@ -10,7 +10,7 @@ export class MailService {
     this.resend = new Resend(this.configService.get<string>('RESEND_API_KEY'));
   }
 
-  async sendMovieReleaseNotification(userEmail: string, movieTitle: string) {
+  async sendMovieReleaseNotification(userEmail: string, movieTitle: string, movieImage: string) {
     try {
       const response = await this.resend.emails.send({
         from: 'Plataforma de Filmes <filmes@resend.dev>',
@@ -22,6 +22,7 @@ export class MailService {
             <p style="color: #666; font-size: 16px; line-height: 1.5;">
               O filme "${movieTitle}" que você cadastrou em nossa plataforma foi lançado hoje!
             </p>
+            <img src="${movieImage}" alt="${movieTitle}" style="max-width: 300px;" />
             <p style="color: #666; font-size: 16px; line-height: 1.5;">
               Não perca a chance de assistir a este filme que você estava aguardando.
             </p>
@@ -34,4 +35,4 @@ export class MailService {
       throw new Error(`Erro ao enviar email: ${error.message}`);
     }
   }
-} 
+}

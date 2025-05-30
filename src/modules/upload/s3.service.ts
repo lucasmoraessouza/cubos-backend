@@ -24,7 +24,7 @@ export class S3Service {
       Bucket: this.bucket,
       Key: key,
       Body: fileBuffer,
-      ContentType: 'image/jpeg', // Ajuste conforme necessário
+      ContentType: 'image/jpeg', 
     });
 
     await this.s3Client.send(command);

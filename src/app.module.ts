@@ -6,6 +6,7 @@ import { MailModule } from './modules/mail/mail.module';
 import { MoviesModule } from './modules/movies/movies.module';
 import { StorageModule } from './modules/storage/storage.module';
 import { UploadModule } from './modules/upload/upload.module';
+import { MovieNotificationsService } from './modules/scheduler/movie-notifications.service';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { UploadModule } from './modules/upload/upload.module';
     UploadModule
   ],
   controllers: [],
-  providers: [],
+  providers: [MovieNotificationsService],
 })
 export class AppModule {}
