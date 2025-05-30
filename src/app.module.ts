@@ -5,6 +5,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
 import { MoviesModule } from './modules/movies/movies.module';
 import { StorageModule } from './modules/storage/storage.module';
+import { UploadModule } from './modules/upload/upload.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { StorageModule } from './modules/storage/storage.module';
     AuthModule,
     MailModule,
     MoviesModule,
-    StorageModule
+    StorageModule,
+    UploadModule
   ],
   controllers: [],
   providers: [],

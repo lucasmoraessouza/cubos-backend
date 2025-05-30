@@ -1,31 +1,85 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsInt, IsDateString, Min, IsOptional, IsUrl } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { IsNotEmpty, IsString, Min, IsOptional, IsNumber, IsEnum, IsArray, IsUrl } from 'class-validator';
+import { Transform } from 'class-transformer';
+
+export enum Genre {
+  ACAO = 'ACAO',
+  AVENTURA = 'AVENTURA',
+  COMEDIA = 'COMEDIA',
+  DRAMA = 'DRAMA',
+  TERROR = 'TERROR',
+  FICCAO_CIENTIFICA = 'FICCAO_CIENTIFICA'
+}
+
+export enum OriginalLanguage {
+  EN = 'en',
+  PT = 'pt',
+  ES = 'es',
+  FR = 'fr'
+}
 
 export class CreateMovieDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  title: string;
+  originalTitle: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  description: string;
-
-  @ApiProperty({ required: false })
-  @IsOptional()
-  @IsUrl()
-  imageUrl?: string;
+  portugueseTitle: string;
 
   @ApiProperty()
-  @IsInt()
-  @Min(1)
+  @IsString()
+  @IsNotEmpty()
+  synopsis: string;
+
+  @ApiProperty()
+  @IsNumber()
+  @Min(0)
+  popularity: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @Min(0)
+  voteCount: number;
+
+  @ApiProperty()
+  @IsNumber()
   duration: number;
 
   @ApiProperty()
-  @IsDateString()
+  @IsString()
   releaseDate: string;
+
+  @ApiProperty()
+  @IsNumber()
+  @Min(0)
+  budget: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @Min(0)
+  revenue: number;
+
+  @ApiProperty()
+  @IsString()
+  originalLanguage: string;
+
+  @ApiProperty()
+  @IsString()
+  imageUrl: string;
+
+  @ApiProperty()
+  @IsArray()
+  @IsEnum(Genre, { each: true })
+  genres: Genre[];
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  @IsUrl()
+  trailerUrl?: string;
 }
 
 export class UpdateMovieDto {
@@ -33,72 +87,106 @@ export class UpdateMovieDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  title?: string;
+  originalTitle?: string;
 
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  description?: string;
+  portugueseTitle?: string;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsUrl()
-  image?: string;
+  @IsString()
+  @IsNotEmpty()
+  synopsis?: string;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsInt()
-  @Min(1)
+  @IsNumber()
+  @Min(0)
+  popularity?: number;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  voteCount?: number;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsNumber()
   duration?: number;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsDateString()
+  @IsString()
   releaseDate?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  budget?: number;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  revenue?: number;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsEnum(OriginalLanguage)
+  originalLanguage?: OriginalLanguage;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsArray()
+  @IsEnum(Genre, { each: true })
+  genres?: Genre[];
+
+  image?: Express.Multer.File;
 }
 
 export class MovieFilterDto {
-  @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
   title?: string;
 
-  @ApiProperty({ required: false })
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
-  @IsInt()
-  @Min(1)
+  @IsNumber()
   minDuration?: number;
 
-  @ApiProperty({ required: false })
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
-  @IsInt()
-  @Min(1)
+  @IsNumber()
   maxDuration?: number;
 
-  @ApiProperty({ required: false })
   @IsOptional()
-  @IsDateString()
+  @IsString()
   startDate?: string;
 
-  @ApiProperty({ required: false })
   @IsOptional()
-  @IsDateString()
+  @IsString()
   endDate?: string;
 
-  @ApiProperty({ required: false })
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
-  @IsInt()
-  @Min(1)
-  page?: number;
+  @IsNumber()
+  page?: number = 1;
 
-  @ApiProperty({ required: false })
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
-  @IsInt()
-  @Min(1)
-  limit?: number;
+  @IsNumber()
+  limit?: number = 10;
+
+  @IsOptional()
+  @IsEnum(Genre)
+  genre?: Genre;
+
+  @IsOptional()
+  @IsEnum(OriginalLanguage)
+  originalLanguage?: OriginalLanguage;
 } 

@@ -37,14 +37,13 @@ export class MoviesService {
       },
     });
 
-    // Se a data de lançamento for futura, agendar notificação
     const releaseDate = new Date(dto.releaseDate);
     if (releaseDate > new Date()) {
       const delay = releaseDate.getTime() - Date.now();
       setTimeout(async () => {
         await this.mailService.sendMovieReleaseNotification(
           movie.user.email,
-          movie.title,
+          movie.originalTitle,
         );
       }, delay);
     }
@@ -58,7 +57,9 @@ export class MoviesService {
       minDuration, 
       maxDuration, 
       startDate, 
-      endDate, 
+      endDate,
+      genre,
+      originalLanguage, 
       page = 1, 
       limit = 10 
     } = filters;
@@ -66,7 +67,7 @@ export class MoviesService {
     const where = {
       userId,
       ...(title && { 
-        title: { 
+        originalTitle: { 
           contains: title,
           mode: 'insensitive' as Prisma.QueryMode
         } 
@@ -82,6 +83,14 @@ export class MoviesService {
         releaseDate: { 
           lte: new Date(endDate + 'T23:59:59.999Z') 
         } 
+      }),
+      ...(genre && {
+        genres: {
+          has: genre
+        }
+      }),
+      ...(originalLanguage && {
+        originalLanguage
       }),
     };
 

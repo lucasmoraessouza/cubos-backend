@@ -1,4 +1,3 @@
-// This is your Prisma schema file
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,17 +19,34 @@ model User {
   @@map("users")
 }
 
+enum Genre {
+  ACAO
+  AVENTURA
+  COMEDIA
+  DRAMA
+  TERROR
+  FICCAO_CIENTIFICA
+}
+
 model Movie {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  imageUrl    String?
-  duration    Int
-  releaseDate DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id               String   @id @default(uuid())
+  originalTitle    String
+  portugueseTitle  String
+  synopsis         String
+  popularity       Float
+  voteCount        Int
+  duration         Int
+  releaseDate      DateTime
+  imageUrl         String?
+  budget           Int
+  revenue          Int
+  originalLanguage String
+  genres           Genre[]
+  trailerUrl       String?
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@map("movies")
 }
